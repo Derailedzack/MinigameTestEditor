@@ -57,6 +57,12 @@ const char* ConvertEditorModeToStr(EDITOR_MODE mode) {
     case NONE:
         return "None";
         break;
+    case SAVE_FILE:
+        return "Save Level Script";
+        break;
+    case OPEN_FILE:
+        return "Open Level Script";
+        break;
     default:
         return "Invaild MODE";
         break;

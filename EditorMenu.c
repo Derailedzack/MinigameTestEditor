@@ -4,17 +4,39 @@
 #include "nuklear.h"
 #include "Entity.h"
 #include <float.h>
+#include <SDL3/SDL.h>
+#include "LevelUtil.h"
 extern struct nk_context* MainUi_Ctx;
 extern int MainWin_Width;
 extern EDITOR_MODE CurrentMode;
 extern struct EntityData* CurrentEntities;
 extern struct EntityData* RegisteredProps;
+struct EntityData NullEntity;
 extern int i_clamp;
 extern unsigned int Max_Props;
 int SelectedPropIndex;
 const char* PropTextList;
+const char* OpenFileName;
 struct nk_colorf WallColor;
-//nk_bool* IsPropSelected;
+const SDL_DialogFileFilter Level_Filters[] = {
+	{"Lua","lua"}
+};
+//nk_bool* IsPropSelected; 
+void Menu_FileDialogFunc(void* ud, const char** filelist, int filter) {
+	if (filelist == NULL) {
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Level Save", SDL_GetError(), NULL);
+		return;
+	}
+	if (CurrentMode == SAVE_FILE) {
+		PropTextList = filelist[0]; //Ignore every other file except the first one as we don't need to support multiple files
+	}
+	else {
+		OpenFileName = filelist[0];
+		LoadLevelFromScript(OpenFileName);
+	}
+	
+	//WriteLevelToScript(PropTextList);
+}
 void Menu_Init() {
 
 #if 0
@@ -41,7 +63,12 @@ void Menu_Init() {
 		//nk_layout_row_dynamic(MainUi_Ctx, 4, 1);
 		//nk_menu_begin_text()
 		nk_layout_row_push(MainUi_Ctx, 45);
-		if (nk_menu_begin_label(MainUi_Ctx, "Test", NK_TEXT_LEFT, nk_vec2(140, 200))) {
+		if (nk_menu_begin_label(MainUi_Ctx, "File", NK_TEXT_LEFT, nk_vec2(140, 200))) {
+			nk_layout_row_dynamic(MainUi_Ctx, 25, 1);
+			Menu_PopulateFile();
+			nk_menu_end(MainUi_Ctx);
+		}
+		if (nk_menu_begin_label(MainUi_Ctx, "Mode", NK_TEXT_LEFT, nk_vec2(140, 200))) {
 			nk_layout_row_dynamic(MainUi_Ctx, 25, 1);
 			Menu_Populate();
 			nk_menu_end(MainUi_Ctx);
@@ -138,6 +165,45 @@ void Menu_Populate() {
 	
 	
 	
+}
+void Menu_PopulateFile() {
+	if (nk_menu_item_label(MainUi_Ctx, "New", NK_TEXT_LEFT)) {
+		//CurrentMode = PLACE_WALL;
+		//}
+		for (int i = 0; i < MAX_ENTITES - 1; i++) {
+			if (CurrentEntities[i].Update != NULL) {
+				CurrentEntities[i].Update = NULL;
+				CurrentEntities[i] = NullEntity;
+			}
+		}
+	}
+	if (nk_menu_item_label(MainUi_Ctx, "Open", NK_TEXT_LEFT)) {
+		//CurrentMode = PLACE_WALL;
+		CurrentMode = OPEN_FILE;
+		//if (OpenFileName == NULL || strlen(OpenFileName) == 0) {
+			SDL_ShowOpenFileDialog(Menu_FileDialogFunc, NULL, NULL, Level_Filters, 1, SDL_GetCurrentDirectory(),false);
+			//Write
+		
+		//}
+		//else {
+			//WriteLevelToScript(PropTextList);
+		//}
+
+	}
+	if (nk_menu_item_label(MainUi_Ctx, "Save",NK_TEXT_LEFT)) {
+		//CurrentMode = PLACE_WALL;
+		CurrentMode = SAVE_FILE;
+		if (PropTextList == NULL || strlen(PropTextList) == 0) {
+			SDL_ShowSaveFileDialog(Menu_FileDialogFunc, NULL, NULL, Level_Filters, 1, SDL_GetCurrentDirectory());
+			//Write
+			
+		}
+		else {
+			WriteLevelToScript(PropTextList);
+		}
+	}
+
+
 }
 void Menu_PopulateTrigger() {
 	if (nk_menu_item_label(MainUi_Ctx, ConvertEditorModeToStr(PLACE_TRIGGER), NK_TEXT_LEFT)) {

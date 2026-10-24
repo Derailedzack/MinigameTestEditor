@@ -12,6 +12,8 @@ typedef enum{
     SCALE_TRIGGER,
     COLOR_WALL,
     COLOR_TRIGGER,
+    SAVE_FILE,
+    OPEN_FILE
     //SPAWN_SPRITE
 }EDITOR_MODE;
 //I've decided I'll implement trigger placement and movement as a mode instead

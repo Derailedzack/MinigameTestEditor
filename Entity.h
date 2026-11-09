@@ -12,7 +12,7 @@ typedef void (EntityUpdate_Func)(EntityData data);
 struct EntityData {
 	//SDL_Surface* Entity_SwTex;
 	const char* name;
-	const char* tex_path;
+	char* tex_path;
 	SDL_Texture* entityTex;
 	SDL_Color entityDebugColor;
 	SDL_FRect entitySprRect;
@@ -32,6 +32,8 @@ typedef enum EntityInitFlags {
 }EntityInitFlags;
 
 void Entity_CreateTexture(struct EntityData* entity, const char* tex_name);
+void Entity_CreateTextureWithTexRes(struct EntityData* entity, const char* tex_name);
+
 struct EntityData* Entity_Create(const char* name, const char* tex_path, SDL_Color debug_color, float start_x, float start_y, float width, float height, float render_width, float render_height);
 //EntityData* Entity_Create(const char* name,const char* tex_path, SDL_Color debug_color, SDL_FRect spr_rect, SDL_FRect render_rect);
 //void Entity_Init(EntityData* entity,EntityInitFlags init_flags);

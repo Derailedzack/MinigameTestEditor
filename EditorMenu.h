@@ -6,3 +6,5 @@ void Menu_PopulateFile();
 void Menu_OpenSpawnPropUI();
 void Menu_OpenResizeUI();
 void Menu_OpenChangeColorUI();
+void Menu_OpenTextureCfgUI();
+void Menu_OpenCreateBG_UI();

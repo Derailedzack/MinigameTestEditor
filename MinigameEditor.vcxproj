@@ -103,6 +103,7 @@
     <ClInclude Include="EditorMode.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="GuiRenderer.h" />
+    <ClInclude Include="LevelBackground.h" />
     <ClInclude Include="LevelUtil.h" />
     <ClInclude Include="MainRenderer.h" />
     <ClInclude Include="NuklearConfig.h" />
@@ -121,6 +122,7 @@
     <ClCompile Include="EditorMode.c" />
     <ClCompile Include="Entity.c" />
     <ClCompile Include="GuiRenderer.c" />
+    <ClCompile Include="LevelBackground.c" />
     <ClCompile Include="LevelUtil.c" />
     <ClCompile Include="MainRenderer.c" />
     <ClCompile Include="Player.c" />

@@ -25,7 +25,7 @@ void Wall_Init(struct EntityData* data){
 void AddNewWall(int index, float start_x, float start_y, float start_w, float start_h) {
 
     //if(index > MAX_ENTITES && index < MAX_ENTITES == false){
-    i_clamp = SDL_clamp(index, 0, MAX_ENTITES - 1);
+    i_clamp = SDL_clamp(index, 1, MAX_ENTITES - 1);
     CurrentEntities[i_clamp] = *WallInit(start_x, start_y, start_w, start_h);
     //   / }
 
@@ -35,7 +35,7 @@ void AddNewWall(int index, float start_x, float start_y, float start_w, float st
 void AddNewWallWithColor(int index, float start_x, float start_y, float start_w, float start_h,SDL_Color start_color) {
 
              //if(index > MAX_ENTITES && index < MAX_ENTITES == false){
-             i_clamp = SDL_clamp(index, 0, MAX_ENTITES - 1);
+             i_clamp = SDL_clamp(index, 1, MAX_ENTITES - 1);
              CurrentEntities[i_clamp] = *WallInit(start_x, start_y, start_w, start_h);
              CurrentEntities[i_clamp].entityDebugColor = start_color;
              //   / }

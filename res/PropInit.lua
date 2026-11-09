@@ -17,12 +17,12 @@ function Prop.init(max_props)
 Prop.CreateArray(max_props)
 Prop.CreateRegistryArray(max_props);
 end
-local TableProp = Prop.new("res/Table03.png",28,54,"table",28*4,54*4)
-local StageTopProp = Prop.new("res/Stage_Top.png",48,19,"stage_top",48*4,19*4)
+local TableProp = Prop.new("res/Table03.png",28,54,"table",28*2,54*2)
+local StageTopProp = Prop.new("res/Stage_Top.png",48,19,"stage_top",48*2,19*2)
 
 function Prop.register_all()
-Prop.Register(TableProp,1)
-Prop.Register(StageTopProp,2)
+Prop.Register(TableProp,0)
+Prop.Register(StageTopProp,1)
 end
 Prop.init(64)
 Prop.register_all()

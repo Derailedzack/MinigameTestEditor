@@ -6,6 +6,7 @@
 #include <float.h>
 #include <SDL3/SDL.h>
 #include "LevelUtil.h"
+#include "LevelBackground.h"
 extern struct nk_context* MainUi_Ctx;
 extern int MainWin_Width;
 extern EDITOR_MODE CurrentMode;
@@ -21,6 +22,18 @@ struct nk_colorf WallColor;
 const SDL_DialogFileFilter Level_Filters[] = {
 	{"Lua","lua"}
 };
+char TexPathBuf[512];
+char BG_TexPathBuf[512];
+char start_w_conv[5];
+char start_h_conv[5];
+char end_w_conv[5];
+char end_h_conv[5];
+int start_w = 32;
+int start_h = 32;
+int end_w = 1024;
+int end_h = 768;
+extern float StartWallX;
+extern float StartWallY;
 //nk_bool* IsPropSelected; 
 void Menu_FileDialogFunc(void* ud, const char** filelist, int filter) {
 	if (filelist == NULL) {
@@ -34,28 +47,9 @@ void Menu_FileDialogFunc(void* ud, const char** filelist, int filter) {
 		OpenFileName = filelist[0];
 		LoadLevelFromScript(OpenFileName);
 	}
-	
 	//WriteLevelToScript(PropTextList);
 }
 void Menu_Init() {
-
-#if 0
-	for (int i = 0; i < Max_Props; i++) {
-
-	}
-	PropTextList = calloc(strlen("Prop\0"), sizeof(char));
-
-	IsPropSelected = calloc(Max_Props, sizeof(nk_bool));
-	if (IsPropSelected == NULL) {
-		SDL_Log("Failed allocated IsPropSelected array! %s\n", strerror(errno));
-		exit(-6);
-	}
-#endif
-#if 0
-	for (int i = 0; i < Max_Props; i++) {
-		IsPropSelected[i] = nk_false;
-	}
-#endif
 	if (nk_begin(MainUi_Ctx, "Resize", nk_rect(0, 0, MainWin_Width, 34), 0)) {
 
 		nk_menubar_begin(MainUi_Ctx);
@@ -78,11 +72,7 @@ void Menu_Init() {
 			Menu_PopulateTrigger();
 			nk_menu_end(MainUi_Ctx);
 		}
-#if 0
-		
-			
-		}
-#endif
+
 		//nk_button_color(MainUi_Ctx, CurrentEntities[i_clamp].entityDebugColor);
 		nk_menubar_end(MainUi_Ctx);
 		nk_end(MainUi_Ctx);
@@ -125,6 +115,82 @@ void Menu_OpenChangeColorUI() {
 		}
 
 }
+extern SDL_Color Window_Color;
+void Menu_OpenCreateBG_UI() {
+	
+
+	if (nk_begin(MainUi_Ctx, "Create BG", nk_rect(0, 220, 320, 400), NK_WINDOW_BORDER | NK_WINDOW_MOVABLE | NK_WINDOW_CLOSABLE | NK_WINDOW_MINIMIZABLE | NK_WINDOW_TITLE)) {
+#if 0
+		nk_layout_row_dynamic(MainUi_Ctx, 16, 4);
+		nk_label(MainUi_Ctx, "Start X", NK_TEXT_ALIGN_TOP);
+		nk_slider_int(MainUi_Ctx, 0, &start_x, 8192, 1);
+		nk_layout_row_dynamic(MainUi_Ctx, 16, 4);
+		nk_label(MainUi_Ctx, "Start Y", NK_TEXT_ALIGN_TOP);
+		nk_slider_int(MainUi_Ctx, 0, &start_y, 8192, 1);
+		
+
+		nk_layout_row_dynamic(MainUi_Ctx, 16, 4);
+		nk_label(MainUi_Ctx, "BG Width", NK_TEXT_ALIGN_TOP);
+		nk_slider_int(MainUi_Ctx, 0, &start_w, 8192, 1);
+		nk_layout_row_dynamic(MainUi_Ctx, 16, 4);
+		nk_label(MainUi_Ctx, "BG Height", NK_TEXT_ALIGN_TOP);
+		nk_slider_int(MainUi_Ctx, 0, &start_h, 8192, 1);
+		nk_layout_row_dynamic(MainUi_Ctx, 16, 4);
+		nk_label(MainUi_Ctx, "BG Width End", NK_TEXT_ALIGN_TOP);
+		nk_slider_int(MainUi_Ctx, 0, &end_w, 8192, 1);
+		nk_layout_row_dynamic(MainUi_Ctx, 16, 4);
+		nk_label(MainUi_Ctx, "BG Height End", NK_TEXT_ALIGN_TOP);
+		nk_slider_int(MainUi_Ctx, 0, &end_h, 8192, 1);
+#endif
+		//CurrentEntities[i_clamp] = *LevelBG_InitNoUpdate(BG_TexPathBuf, false, start_w, start_h);
+		
+#if 0
+		nk_layout_row_dynamic(MainUi_Ctx, 32, 4);
+		nk_property_int(MainUi_Ctx, "BG Tile Height", 0, &start_h, 8192, 1, 1.0f);
+		nk_layout_row_dynamic(MainUi_Ctx, 32, 4);
+		nk_property_int(MainUi_Ctx, "BG Width", 0, &end_w, 8192, 1, 1.0f);
+		nk_layout_row_dynamic(MainUi_Ctx, 32, 4);
+		nk_property_int(MainUi_Ctx, "BG Height", 0, &end_h, 8192, 1, 1.0f);
+#endif
+		nk_layout_row_dynamic(MainUi_Ctx, 32, 2);
+		nk_label(MainUi_Ctx, "BG Texture Path", NK_TEXT_ALIGN_LEFT);
+		nk_edit_string_zero_terminated(MainUi_Ctx, NK_EDIT_DEFAULT | NK_EDIT_BOX, BG_TexPathBuf, 512, NULL);
+		nk_layout_row_dynamic(MainUi_Ctx, 32, 2);
+		nk_label(MainUi_Ctx, "BG Tile Width", NK_TEXT_ALIGN_LEFT);
+		nk_edit_string_zero_terminated(MainUi_Ctx, NK_EDIT_DEFAULT | NK_EDIT_BOX, start_w_conv, 5, NULL);
+		nk_layout_row_dynamic(MainUi_Ctx, 32, 2);
+		nk_label(MainUi_Ctx, "BG Tile Height", NK_TEXT_ALIGN_LEFT);
+		nk_edit_string_zero_terminated(MainUi_Ctx, NK_EDIT_DEFAULT | NK_EDIT_BOX, start_h_conv, 5, NULL);
+		nk_layout_row_dynamic(MainUi_Ctx, 32, 2);
+		nk_label(MainUi_Ctx, "BG Width", NK_TEXT_ALIGN_LEFT);
+		nk_edit_string_zero_terminated(MainUi_Ctx, NK_EDIT_DEFAULT | NK_EDIT_BOX, end_w_conv, 5, NULL);
+		nk_layout_row_dynamic(MainUi_Ctx, 32, 2);
+		nk_label(MainUi_Ctx, "BG Height", NK_TEXT_ALIGN_LEFT);
+		nk_edit_string_zero_terminated(MainUi_Ctx, NK_EDIT_DEFAULT | NK_EDIT_BOX, end_h_conv, 5, NULL);
+		//nk_layout_row_push(MainUi_Ctx, 50.0);
+		nk_layout_row_static(MainUi_Ctx, 0, 64, 2);
+
+		if (nk_button_label(MainUi_Ctx, "Create") == true) {
+			if (CurrentEntities[i_clamp].Update == NULL) {
+				CurrentEntities[i_clamp] = *Entity_Create("BG0", TexPathBuf, Window_Color, 0, 0, SDL_atof(start_w_conv), SDL_atof(start_h_conv), SDL_atof(end_w_conv), SDL_atof(end_w_conv));
+				Entity_CreateTexture(&CurrentEntities[i_clamp], TexPathBuf);
+				CurrentEntities[i_clamp].Update = LevelBG_Update;
+			}
+			
+#if 0
+			CurrentEntities[i_clamp].entityRenderRect.w = SDL_atoi(end_w_conv);
+			CurrentEntities[i_clamp].entityRenderRect.h = SDL_atoi(end_h_conv);;
+			CurrentEntities[i_clamp].entityRenderRect.x = StartWallX;
+			CurrentEntities[i_clamp].entityRenderRect.y = StartWallY;
+#endif
+			
+			CurrentMode = NONE;
+		}
+
+	nk_end(MainUi_Ctx);
+}
+
+}
 void Menu_OpenResizeUI() {
 	if (nk_begin(MainUi_Ctx, "Test", nk_rect(0, 220, 320,200),  NK_WINDOW_MOVABLE | NK_WINDOW_TITLE)) {
 		nk_layout_row_dynamic(MainUi_Ctx, 25, 1);
@@ -138,6 +204,24 @@ void Menu_OpenResizeUI() {
 	}
 
 
+}
+void Menu_OpenTextureCfgUI() {
+	
+	if (nk_begin(MainUi_Ctx, "Test", nk_rect(0, 220, 320, 200), NK_WINDOW_MOVABLE | NK_WINDOW_TITLE)) {
+		nk_layout_row_dynamic(MainUi_Ctx, 16, 1);
+		//TexPathBuf = CurrentEntities[i_clamp].tex_path;
+		nk_label(MainUi_Ctx, "BG0 Texture Path", NK_TEXT_ALIGN_TOP);
+		nk_layout_row_dynamic(MainUi_Ctx, 32, 1);
+		//SDL_Log("&CurrentEntities[0].tex_path=%s,CurrentEntities[0].tex_path=%s", &CurrentEntities[0].tex_path, CurrentEntities[0].tex_path);
+		nk_edit_string_zero_terminated(MainUi_Ctx, NK_EDIT_DEFAULT | NK_EDIT_BOX, TexPathBuf,512,NULL);
+		nk_layout_row_dynamic(MainUi_Ctx, 32, 1);
+		if (nk_button_text(MainUi_Ctx, "Set Texture", 11)) {
+			SDL_DestroyTexture(CurrentEntities[0].entityTex);
+			Entity_CreateTextureWithTexRes(&CurrentEntities[0], TexPathBuf);
+			CurrentMode = NONE;
+		}
+		nk_end(MainUi_Ctx);
+	}
 }
 void Menu_Populate() {
 	if (nk_menu_item_label(MainUi_Ctx, ConvertEditorModeToStr(PLACE_WALL), NK_TEXT_LEFT)) {
@@ -214,8 +298,8 @@ void Menu_PopulateTrigger() {
 		CurrentMode = MOVE_TRIGGER;
 		//Menu_OpenResizeUI();
 	}
-	if (nk_menu_item_label(MainUi_Ctx, ConvertEditorModeToStr(SCALE_TRIGGER), NK_TEXT_LEFT)) {
-		CurrentMode = SCALE_TRIGGER;
+	if (nk_menu_item_label(MainUi_Ctx, ConvertEditorModeToStr(CREATE_BG), NK_TEXT_LEFT)) {
+		CurrentMode = CREATE_BG;
 		//Menu_OpenResizeUI();
 	}
 	if (nk_menu_item_label(MainUi_Ctx, ConvertEditorModeToStr(COLOR_WALL), NK_TEXT_LEFT)) {
@@ -223,5 +307,9 @@ void Menu_PopulateTrigger() {
 		//Menu_OpenResizeUI();
 		//Menu_OpenChangeColorUI();
 	}
-
+	if (nk_menu_item_label(MainUi_Ctx, ConvertEditorModeToStr(CHANGE_BGTEX), NK_TEXT_LEFT)) {
+		CurrentMode = CHANGE_BGTEX;
+		//Menu_OpenResizeUI();
+		//Menu_OpenChangeColorUI();
+	}
 }

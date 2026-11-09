@@ -21,6 +21,9 @@ int sel_clamp;
 int sel_val;
 const char* ConvertEditorModeToStr(EDITOR_MODE mode) {
     switch (mode) {
+    case NONE:
+        return "None";
+        break;
     case PLACE_WALL:
         return "Place Wall(s)";
         break;
@@ -45,8 +48,8 @@ const char* ConvertEditorModeToStr(EDITOR_MODE mode) {
     case PLACE_TRIGGER:
         return "Place Trigger";
         break;
-    case SCALE_TRIGGER:
-        return "Scale Trigger";
+    case CREATE_BG:
+        return "Create BG";
         break;
     case MOVE_TRIGGER:
         return "Move Trigger";
@@ -54,8 +57,8 @@ const char* ConvertEditorModeToStr(EDITOR_MODE mode) {
     case COLOR_WALL:
         return "Change Wall Color";
         break;
-    case NONE:
-        return "None";
+    case CHANGE_BGTEX:
+        return "Change BG0 Tex.";
         break;
     case SAVE_FILE:
         return "Save Level Script";

@@ -59,13 +59,18 @@ void Nuklear_Draw() {
 		}
 #endif
 
-		if (CurrentMode == SCALE_WALL || CurrentMode == SCALE_TRIGGER) {
+		if (CurrentMode == SCALE_WALL) {
 			Menu_OpenResizeUI();
 		}
 		if (CurrentMode == COLOR_WALL) {
 			Menu_OpenChangeColorUI();
 		}
-		
+		if (CurrentMode == CHANGE_BGTEX) {
+			Menu_OpenTextureCfgUI();
+		}
+		if (CurrentMode == CREATE_BG) {
+			Menu_OpenCreateBG_UI();
+		}
 #if 0
 		if (CurrentMode == PLACE_SPRITE) {
 			Menu_OpenSpawnPropUI();

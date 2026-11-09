@@ -91,6 +91,7 @@ int Script_ConvertPropToEntity(lua_State* L){
     lua_pushlightuserdata(L,entity);
     return 1;
 }
+
 //Just remember to call the init function of the prop if it has one (Oh wait no these don't)
 int Script_RegisterProp(lua_State* L) {
     luaL_checktype(L, 1, LUA_TTABLE);

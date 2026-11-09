@@ -80,6 +80,27 @@ void Entity_CreateTexture(struct EntityData* entity,const char* tex_name) {
 	}
 	//entity->entityTex 
 }
+void Entity_CreateTextureWithTexRes(struct EntityData* entity, const char* tex_name) {
+	SDL_Surface* entity_sw_tex = SDL_LoadPNG(tex_name);
+	if (entity_sw_tex == NULL) {
+		SDL_Log("Entity %s will be invisible as the specified texture is invaild! (%s)\n", entity->name, SDL_GetError());
+		return;
+	}
+	entity->entityTex = SDL_CreateTextureFromSurface(Main_Renderer, entity_sw_tex);
+	if (entity->entityTex == NULL) {
+		SDL_Log(SDL_GetError());
+		return;
+	}
+	entity->entitySprRect.w = entity_sw_tex->w;
+	entity->entitySprRect.h = entity_sw_tex->h;
+	//entity->entitySprRect.x = 0;
+	//entity->entitySprRect.y = 0;
+
+	entity->entityRenderRect.w = 1024;
+	entity->entityRenderRect.h = 768;
+	//entity->entitySprRect.x = 0;
+	//entity->entitySprRect.y = 0;
+}
 #if 0
 void Entity_Draw(EntityData* entity) {
 	if (entity->entityTex == NULL) {

@@ -13,6 +13,7 @@
 #ifdef USE_NATIVE_MENU
 #include "native_menu_bar.h"
 #endif
+#include "LevelBackground.h"
 //#include <assert.h>
 extern SDL_Window* Main_Window;
 extern SDL_Renderer* Main_Renderer;
@@ -40,6 +41,7 @@ extern int x;
 extern int i_clamp;
 extern int sel_val;
 extern int sel_clamp;
+extern char TexPathBuf[512];
 int ModeClamp;
 #ifdef USE_NATIVE_MENU
 HMENU MainUi_Menu;
@@ -55,8 +57,11 @@ void MainRenderer_Init() {
 	if (CurrentEntities == NULL) {
 		exit(-6);
 	}
+	CurrentEntities[0] = *LevelBG_Init("res/BackgroundTest.png",false,32,32);
 	//CurrentEntities[0] = *PlayerEntity_Init();
-	CurrentEntities[0] = *WallInit(0,0,1024,128);
+
+	strcpy(TexPathBuf, CurrentEntities[0].tex_path);
+	CurrentEntities[1] = *WallInit(0,0,1024,128);
  //test = Enemy_Init();
 		SDL_GetRenderDrawColor(Main_Renderer,&Window_Color.r,&Window_Color.g,&Window_Color.b,&Window_Color.a);
 		for (int i = 0; i < MAX_ENTITES - 1; i++) {
@@ -319,6 +324,8 @@ void MainRenderer_EventTest(){
 					CurrentSubMode = CHANGE_INDEX;
 					break;
 #endif
+					//What does this do again? (Is there even code that checks the current sub mode. I'm pretty sure I never actually implemented anything
+					// that uses this as I didn't need it. So maybe I should remove this from the project)
 				case SDLK_F1:
 					if (CurrentSubMode == CHANGE_SELECTED_PROP) {
 						CurrentSubMode = CHANGE_INDEX;
@@ -336,11 +343,11 @@ void MainRenderer_EventTest(){
 						//sel_val++;
 						//sel_clamp = SDL_clamp(x, 0, Max_Props - 1);
 						SDL_Log("sel_clamp:%i\n", sel_clamp);
-					//	if (&RegisteredProps[i_clamp] != NULL) {
+					if (&RegisteredProps[i_clamp].Update != NULL) {
 							CurrentProps[i_clamp] = RegisteredProps[sel_val];
 							CurrentProps[i_clamp].Init = PropEntity_Init;
 							CurrentProps[i_clamp].Update = PropEntity_Update;
-						//}
+						}
 					}
 					//CurrentProps[i_clamp] = RegisteredProp
 					break;
@@ -349,7 +356,7 @@ void MainRenderer_EventTest(){
 						sel_val--;
 						sel_clamp = SDL_clamp(sel_val, 0, Max_Props - 1);
 						SDL_Log("sel_clamp:%i\n", sel_clamp);
-						if (&RegisteredProps[i_clamp] != NULL) {
+						if (&RegisteredProps[i_clamp].Update != NULL) {
 							CurrentProps[i_clamp] = RegisteredProps[sel_val];
 							CurrentProps[i_clamp].Init = PropEntity_Init;
 							CurrentProps[i_clamp].Update = PropEntity_Update;
@@ -357,8 +364,6 @@ void MainRenderer_EventTest(){
 					}
 				
 					break;
-					case SDLK_R:
-						break;
 			}
 		
 			
@@ -378,10 +383,11 @@ void MainRenderer_Update() {
 			//Enemy_Update(test);
 			SDL_SetWindowTitle(Main_Window, EditorTitle);
 			SDL_SetRenderDrawColor(Main_Renderer, 233, 45, 0, 255);
-			SDL_RenderDebugTextFormat(Main_Renderer, Player_Rect.x - 16, Player_Rect.y - 16, "X:%f Y:%f\n", Player_Rect.x, Player_Rect.y);
+			SDL_RenderDebugTextFormat(Main_Renderer, CurrentEntities[62].entityRenderRect.x - 16, CurrentEntities[62].entityRenderRect.y - 16, "X:%f Y:%f\n", CurrentEntities[62].entityRenderRect.x, CurrentEntities[62].entityRenderRect.y);
 			SDL_SetRenderDrawColor(Main_Renderer, Window_Color.r, Window_Color.g, Window_Color.b, Window_Color.a);
-	
+			//SDL_RenderTextureTiled(Main_Renderer,)
 			//	Phys_Update();
+		//	LevelBG_Update(&CurrentEntities[0]);
 			for (int i = 0; i < MAX_ENTITES - 1; i++) {
 				if (CurrentEntities[i].Update != NULL) {
 					CurrentEntities[i].Update(&CurrentEntities[i]);

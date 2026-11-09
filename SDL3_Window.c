@@ -18,7 +18,7 @@ void SDL3_CreateWindow(int width,int height) {
 		height = Main_VidMode->h;
 	}
 	
-	if (SDL_CreateWindowAndRenderer("Spirit Test", width, height, SDL_WINDOW_RESIZABLE | SDL_WINDOW_VULKAN, &Main_Window, &Main_Renderer) == false) {
+	if (SDL_CreateWindowAndRenderer("Spirit Test", width, height, SDL_WINDOW_RESIZABLE, &Main_Window, &Main_Renderer) == false) {
 		printf("Failed to create window or renderer! (Window and Renderer creation) %s\n", SDL_GetError());
 		ShouldRun = false;
 		return;
@@ -36,29 +36,6 @@ void SDL3_StartMainLoop() {
 		SDL_RenderPresent(Main_Renderer);
 		SDL_PollEvent(&Main_Event);
 		MainRenderer_EventTest();
-#if 0
-		if (Main_Event.type == SDL_EVENT_KEY_DOWN) {
-			if (Main_Event.key.key == SDLK_Q) {
-				ShouldRun = false;
-			}
-			
-				//AddNewWall(i,0,0,32,32);
-				
-			//}
-			#if 0
-			if (Main_Event.key.key == SDLK_C) {
-				if (IsUiVisible) {
-					IsUiVisible = false;
-				}
-				else {
-					IsUiVisible = true;
-				}
-			}
-				#endif
-
-		}
-#endif
-
 		if (Main_Event.type == SDL_EVENT_QUIT) {
 			ShouldRun = false;
 		}

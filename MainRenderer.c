@@ -57,7 +57,7 @@ void MainRenderer_Init() {
 	if (CurrentEntities == NULL) {
 		exit(-6);
 	}
-	CurrentEntities[0] = *LevelBG_Init("res/BackgroundTest.png",false,32,32);
+	//CurrentEntities[0] = *LevelBG_Init("res/BackgroundTest.png",false,32,32);
 	//CurrentEntities[0] = *PlayerEntity_Init();
 
 	strcpy(TexPathBuf, CurrentEntities[0].tex_path);

@@ -120,38 +120,6 @@ void Menu_OpenCreateBG_UI() {
 	
 
 	if (nk_begin(MainUi_Ctx, "Create BG", nk_rect(0, 220, 320, 400), NK_WINDOW_BORDER | NK_WINDOW_MOVABLE | NK_WINDOW_TITLE)) {
-#if 0
-		nk_layout_row_dynamic(MainUi_Ctx, 16, 4);
-		nk_label(MainUi_Ctx, "Start X", NK_TEXT_ALIGN_TOP);
-		nk_slider_int(MainUi_Ctx, 0, &start_x, 8192, 1);
-		nk_layout_row_dynamic(MainUi_Ctx, 16, 4);
-		nk_label(MainUi_Ctx, "Start Y", NK_TEXT_ALIGN_TOP);
-		nk_slider_int(MainUi_Ctx, 0, &start_y, 8192, 1);
-		
-
-		nk_layout_row_dynamic(MainUi_Ctx, 16, 4);
-		nk_label(MainUi_Ctx, "BG Width", NK_TEXT_ALIGN_TOP);
-		nk_slider_int(MainUi_Ctx, 0, &start_w, 8192, 1);
-		nk_layout_row_dynamic(MainUi_Ctx, 16, 4);
-		nk_label(MainUi_Ctx, "BG Height", NK_TEXT_ALIGN_TOP);
-		nk_slider_int(MainUi_Ctx, 0, &start_h, 8192, 1);
-		nk_layout_row_dynamic(MainUi_Ctx, 16, 4);
-		nk_label(MainUi_Ctx, "BG Width End", NK_TEXT_ALIGN_TOP);
-		nk_slider_int(MainUi_Ctx, 0, &end_w, 8192, 1);
-		nk_layout_row_dynamic(MainUi_Ctx, 16, 4);
-		nk_label(MainUi_Ctx, "BG Height End", NK_TEXT_ALIGN_TOP);
-		nk_slider_int(MainUi_Ctx, 0, &end_h, 8192, 1);
-#endif
-		//CurrentEntities[i_clamp] = *LevelBG_InitNoUpdate(BG_TexPathBuf, false, start_w, start_h);
-		
-#if 0
-		nk_layout_row_dynamic(MainUi_Ctx, 32, 4);
-		nk_property_int(MainUi_Ctx, "BG Tile Height", 0, &start_h, 8192, 1, 1.0f);
-		nk_layout_row_dynamic(MainUi_Ctx, 32, 4);
-		nk_property_int(MainUi_Ctx, "BG Width", 0, &end_w, 8192, 1, 1.0f);
-		nk_layout_row_dynamic(MainUi_Ctx, 32, 4);
-		nk_property_int(MainUi_Ctx, "BG Height", 0, &end_h, 8192, 1, 1.0f);
-#endif
 		nk_layout_row_dynamic(MainUi_Ctx, 32, 2);
 		nk_label(MainUi_Ctx, "BG Texture Path", NK_TEXT_ALIGN_LEFT);
 		nk_edit_string_zero_terminated(MainUi_Ctx, NK_EDIT_DEFAULT | NK_EDIT_BOX, BG_TexPathBuf, 512, NULL);
@@ -175,15 +143,7 @@ void Menu_OpenCreateBG_UI() {
 				CurrentEntities[i_clamp] = *Entity_Create("BG0", TexPathBuf, Window_Color, 0, 0, SDL_atof(start_w_conv), SDL_atof(start_h_conv), SDL_atof(end_w_conv), SDL_atof(end_w_conv));
 				Entity_CreateTexture(&CurrentEntities[i_clamp], TexPathBuf);
 				CurrentEntities[i_clamp].Update = LevelBG_Update;
-			}
-			
-#if 0
-			CurrentEntities[i_clamp].entityRenderRect.w = SDL_atoi(end_w_conv);
-			CurrentEntities[i_clamp].entityRenderRect.h = SDL_atoi(end_h_conv);;
-			CurrentEntities[i_clamp].entityRenderRect.x = StartWallX;
-			CurrentEntities[i_clamp].entityRenderRect.y = StartWallY;
-#endif
-			
+			}			
 			CurrentMode = NONE;
 		}
 

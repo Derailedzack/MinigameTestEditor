@@ -119,7 +119,7 @@ extern SDL_Color Window_Color;
 void Menu_OpenCreateBG_UI() {
 	
 
-	if (nk_begin(MainUi_Ctx, "Create BG", nk_rect(0, 220, 320, 400), NK_WINDOW_BORDER | NK_WINDOW_MOVABLE | NK_WINDOW_CLOSABLE | NK_WINDOW_MINIMIZABLE | NK_WINDOW_TITLE)) {
+	if (nk_begin(MainUi_Ctx, "Create BG", nk_rect(0, 220, 320, 400), NK_WINDOW_BORDER | NK_WINDOW_MOVABLE | NK_WINDOW_TITLE)) {
 #if 0
 		nk_layout_row_dynamic(MainUi_Ctx, 16, 4);
 		nk_label(MainUi_Ctx, "Start X", NK_TEXT_ALIGN_TOP);

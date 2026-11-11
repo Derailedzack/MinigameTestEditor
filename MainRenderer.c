@@ -60,7 +60,7 @@ void MainRenderer_Init() {
 	//CurrentEntities[0] = *LevelBG_Init("res/BackgroundTest.png",false,32,32);
 	//CurrentEntities[0] = *PlayerEntity_Init();
 
-	strcpy(TexPathBuf, CurrentEntities[0].tex_path);
+	//strcpy(TexPathBuf, CurrentEntities[0].tex_path); //Whoops forgot to remove this
 	CurrentEntities[1] = *WallInit(0,0,1024,128);
  //test = Enemy_Init();
 		SDL_GetRenderDrawColor(Main_Renderer,&Window_Color.r,&Window_Color.g,&Window_Color.b,&Window_Color.a);

@@ -140,8 +140,8 @@ void Menu_OpenCreateBG_UI() {
 
 		if (nk_button_label(MainUi_Ctx, "Create") == true) {
 			if (CurrentEntities[i_clamp].Update == NULL) {
-				CurrentEntities[i_clamp] = *Entity_Create("BG0", TexPathBuf, Window_Color, 0, 0, SDL_atof(start_w_conv), SDL_atof(start_h_conv), SDL_atof(end_w_conv), SDL_atof(end_w_conv));
-				Entity_CreateTexture(&CurrentEntities[i_clamp], TexPathBuf);
+				CurrentEntities[i_clamp] = *Entity_Create("BG0", BG_TexPathBuf, Window_Color, 0, 0, SDL_atof(start_w_conv), SDL_atof(start_h_conv), SDL_atof(end_w_conv), SDL_atof(end_w_conv));
+				Entity_CreateTexture(&CurrentEntities[i_clamp], BG_TexPathBuf);
 				CurrentEntities[i_clamp].Update = LevelBG_Update;
 			}			
 			CurrentMode = NONE;
@@ -237,14 +237,19 @@ void Menu_PopulateFile() {
 	if (nk_menu_item_label(MainUi_Ctx, "Save",NK_TEXT_LEFT)) {
 		//CurrentMode = PLACE_WALL;
 		CurrentMode = SAVE_FILE;
+#if 0
 		if (PropTextList == NULL || strlen(PropTextList) == 0) {
 			SDL_ShowSaveFileDialog(Menu_FileDialogFunc, NULL, NULL, Level_Filters, 1, SDL_GetCurrentDirectory());
 			//Write
 			
 		}
+		
 		else {
 			WriteLevelToScript(PropTextList);
 		}
+#endif
+		SaveLevelToDisk("DbgTest");
+
 	}
 
 
